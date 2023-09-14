@@ -12,12 +12,12 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_canCreateLinkedList_isEmpty
-    assert @list.isEmpty?
+    assert @list.is_empty?
   end
 
   def test_canInsertToLinkedList_notEmpty
     @list.insert(0)
-    refute @list.isEmpty?
+    refute @list.is_empty?
   end
 
   def test_afterInsertX_thenPollX
@@ -33,7 +33,7 @@ class LinkedListTest < Minitest::Test
   def test_afterInsertXThenPop_isEmpty
     @list.insert(0)
     @list.poll
-    assert(@list.isEmpty?)
+    assert(@list.is_empty?)
   end
 
   def test_insertXAndY_sizeIsTwo
@@ -72,7 +72,7 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_emptyLinkedListPoll_isNil
-    assert_nil( @list.poll)
+    assert_nil(@list.poll)
   end
 
   def test_emptyLinkedListPeek_isNil
@@ -80,8 +80,8 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_full
-    assert(@list.isEmpty?)
-    assert_nil( @list.poll)
+    assert(@list.is_empty?)
+    assert_nil(@list.poll)
 
     @list.insert(1)
     @list.insert(2)
@@ -109,8 +109,29 @@ class LinkedListTest < Minitest::Test
 
     @list.insert(2)
     node = @list.find(2)
-    assert_equal(2,node.ele)
+    assert_equal(2, node.ele)
 
     assert_nil(@list.find(3))
+  end
+
+  def test_insertXAndY_TheNodeOfXIsY
+    @list.insert(1)
+    @list.insert(2)
+
+    firstNode = @list.find(1)
+    secondNode = @list.find(2)
+
+    assert_equal(firstNode.next, secondNode)
+  end
+
+  def test_insertXAndY_ThePrevOfYIsX
+    @list.insert(1)
+    @list.insert(2)
+
+    secondNode = @list.find(2)
+    firstNode = @list.find(1)
+
+    assert_equal(firstNode,secondNode.prev)
+    assert_equal(secondNode,firstNode.next)
   end
 end

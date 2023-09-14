@@ -4,11 +4,10 @@ class LinkedList
   attr_accessor :header, :tail, :size
 
   class Node
-    attr_accessor :ele, :next
+    attr_accessor :ele, :next, :prev
 
     def initialize(ele)
       @ele = ele
-      @next = nil
     end
   end
 
@@ -23,28 +22,28 @@ class LinkedList
       @header = node
     else
       @tail.next = node
+      node.prev = @tail
     end
     @tail = node
   end
 
   def poll
     return nil unless @header
-
-    outEle = @header
-    nextEle = @header.next
-
-    if nextEle
-      @header = nextEle
+    out_ele = @header
+    next_ele = @header.next
+    if next_ele
+      @header.next = nil
+      @header = next_ele
+      @header.prev = nil
     else
       @header = nil
       @tail = nil
     end
-
     @size -= 1
-    outEle.ele
+    out_ele.ele
   end
 
-  def isEmpty?
+  def is_empty?
     size == 0
   end
 
