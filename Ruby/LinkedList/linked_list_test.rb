@@ -72,16 +72,16 @@ class LinkedListTest < Minitest::Test
   end
 
   def test_emptyLinkedListPoll_isNil
-    assert_equal(nil, @list.poll)
+    assert_nil( @list.poll)
   end
 
   def test_emptyLinkedListPeek_isNil
-    assert_equal(nil, @list.poll)
+    assert_nil(@list.poll)
   end
 
   def test_full
     assert(@list.isEmpty?)
-    assert_equal(nil, @list.poll)
+    assert_nil( @list.poll)
 
     @list.insert(1)
     @list.insert(2)
@@ -94,6 +94,6 @@ class LinkedListTest < Minitest::Test
     assert_equal(3, @list.poll)
     assert_equal(4, @list.poll)
     assert_equal(5, @list.poll)
-    assert_equal(nil, @list.poll)
+    assert_nil(@list.poll)
   end
 end
