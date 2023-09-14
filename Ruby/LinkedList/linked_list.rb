@@ -1,49 +1,54 @@
 # frozen_string_literal: true
 
 class LinkedList
+  attr_accessor :header, :tail, :size
+
   class Node
-    attr_accessor :ele,:next
+    attr_accessor :ele, :next
+
     def initialize(ele)
       @ele = ele
       @next = nil
     end
   end
 
-  attr_accessor :empty,:header
-
   def initialize
-    @empty = true;
+    @size = 0
   end
 
   def insert(ele)
+    @size += 1
     node = Node.new(ele)
     if header.nil?
       @header = node
     else
-      @header.next = node
+      @tail.next = node
     end
-    @empty = false
+    @tail = node
   end
 
   def poll
-    if @header.nil?
-      nil
+    return nil unless @header
+
+    outEle = @header
+    nextEle = @header.next
+
+    if nextEle
+      @header = nextEle
     else
-      nextEle = @header.next
-      if nextEle.nil?
-
-      end
+      @header = nil
+      @tail = nil
     end
-    @empty = true
-    @header.ele
-  end
 
-  def size
-    2
+    @size -= 1
+    outEle.ele
   end
-
 
   def isEmpty?
-    empty
+    size == 0
+  end
+
+  def peek
+    header.ele
   end
 end
