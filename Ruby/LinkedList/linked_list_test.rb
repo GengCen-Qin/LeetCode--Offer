@@ -96,4 +96,21 @@ class LinkedListTest < Minitest::Test
     assert_equal(5, @list.poll)
     assert_nil(@list.poll)
   end
+
+  def test_findXInEmptyLinkedList_isNil
+    node = @list.find(1)
+    assert_nil(node)
+  end
+
+  def test_findXInLinkedList
+    @list.insert(1)
+    node = @list.find(1)
+    assert(node)
+
+    @list.insert(2)
+    node = @list.find(2)
+    assert_equal(2,node.ele)
+
+    assert_nil(@list.find(3))
+  end
 end

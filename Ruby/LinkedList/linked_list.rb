@@ -51,4 +51,12 @@ class LinkedList
   def peek
     header.ele
   end
+
+  def find(num)
+    node = header
+    while nil != node
+      return node if node.ele == num
+      node = node.next
+    end
+  end
 end
