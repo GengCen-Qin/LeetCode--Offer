@@ -67,7 +67,18 @@ class LinkedList
   def find(num, cache = false)
     node = header
     node = node.next while nil != node and node.ele != num
-    if cache and node.nil?
+
+    return header if node != nil and node == header
+
+    if node and header
+      node_before, node_after = node.prev, node.next
+      node.prev, node.next = nil, header
+      header.prev, node_before.next = node, node_after
+      node_after.prev = node_before unless node_after.nil?
+      @header = node
+    end
+
+    if node.nil? and cache
       node = Node.new(num)
       insertHeader(node)
     end

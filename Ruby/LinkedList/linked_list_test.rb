@@ -114,62 +114,83 @@ class LinkedListTest < Minitest::Test
     assert_nil(@list.find(3))
   end
 
-  def test_insertXAndY_TheNodeOfXIsY
-    @list.insert(1)
-    @list.insert(2)
-
-    firstNode = @list.find(1)
-    secondNode = @list.find(2)
-
-    assert_equal(firstNode.next, secondNode)
-  end
-
-  def test_insertXAndY_ThePrevOfYIsX
-    @list.insert(1)
-    @list.insert(2)
-
-    secondNode = @list.find(2)
-    firstNode = @list.find(1)
-
-    assert_equal(firstNode,secondNode.prev)
-    assert_equal(secondNode,firstNode.next)
-  end
-
   def test_lru_findXAndXIsHeader_notUpdate
     @list.insert(1)
     @list.find(1)
-    assert_equal(1,@list.peek)
+    assert_equal(1, @list.peek)
   end
 
   def test_lru_findXInEmptyList_insertX
-    @list.find(1,true)
-    assert_equal(1,@list.peek)
+    @list.find(1, true)
+    assert_equal(1, @list.peek)
   end
 
-  def test_lru_findXInList_insertXAndUpdateXToHeader
+  def test_lru_findXIfExist_updateXToHeader
     @list.insert(1)
-    @list.find(2,true)
-    assert_equal(2,@list.peek)
+    @list.find(1)
+    assert_equal(1, @list.peek)
+    assert_equal(1, @list.size)
   end
 
-  def test_findX_xWillUpdateToHeaderIfExist
+  def test_lru_findXIfNotExist_insertXAndUpdateXToHeader
     @list.insert(1)
-    @list.find(2,true)
-    assert_equal(2,@list.peek)
+    first = @list.find(2, true)
+    assert_equal(2, @list.peek)
+    assert_nil(first.prev)
+    assert_equal(1, first.next.ele)
+    assert_nil(first.next.next)
   end
 
-  def test_setMaxLength
-    max_length = 10
-    list = LinkedList.new(max_length)
-    list = LinkedList.new
+  def test_lru_findHeader_returnHeader
+    @list.insert(1)
+    first = @list.find(1)
+    assert_equal(first.ele, @list.peek)
   end
 
-  # def test_sizeEqualMaxLengthThenInsertX_useLURUpdate
-  #   max_length = 1
-  #   list = LinkedList.new(max_length)
-  #   list.insert(1)
-  #   list.insert(2)
-  #   assert_equal(2,list.peek)
-  #   assert_equal(max_length, list.size)
-  # end
+  def test_lru_findLast_updateToHeader
+    @list.insert 1
+    @list.insert 2
+    @list.insert 3
+    header = @list.find(3, true)
+    assert_equal(header.ele, @list.peek)
+    assert_equal(1, header.next.ele)
+    assert_equal(2, header.next.next.ele)
+    assert_nil(header.next.next.next)
+  end
+
+  def test_lru_findMid_updateToHeader
+    @list.insert 1
+    @list.insert 2
+    @list.insert 3
+
+    header = @list.find(2)
+    assert_equal(header.ele,@list.peek)
+    assert_equal(1,header.next.ele)
+    assert_equal(2,header.next.prev.ele)
+    assert_equal(3,header.next.next.ele)
+    assert_equal(1,header.next.next.prev.ele)
+    assert_nil(header.next.next.next)
+  end
+
+  def test_lru_findFull
+    @list.insert 1
+    @list.insert 2
+    @list.insert 3
+    @list.insert 4
+    @list.insert 5
+
+    header = @list.find(4)
+    assert_equal(header.ele,@list.peek)
+    assert_nil(header.prev)
+    assert_equal(1,header.next.ele)
+    assert_equal(2,header.next.next.ele)
+    assert_equal(3,header.next.next.next.ele)
+    assert_equal(5,header.next.next.next.next.ele)
+    assert_nil(header.next.next.next.next.next)
+
+    assert_equal(4,header.next.prev.ele)
+    assert_equal(1,header.next.next.prev.ele)
+    assert_equal(2,header.next.next.next.prev.ele)
+    assert_equal(3,header.next.next.next.next.prev.ele)
+  end
 end
