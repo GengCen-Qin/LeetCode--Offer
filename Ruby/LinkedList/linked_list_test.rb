@@ -134,4 +134,42 @@ class LinkedListTest < Minitest::Test
     assert_equal(firstNode,secondNode.prev)
     assert_equal(secondNode,firstNode.next)
   end
+
+  def test_lru_findXAndXIsHeader_notUpdate
+    @list.insert(1)
+    @list.find(1)
+    assert_equal(1,@list.peek)
+  end
+
+  def test_lru_findXInEmptyList_insertX
+    @list.find(1,true)
+    assert_equal(1,@list.peek)
+  end
+
+  def test_lru_findXInList_insertXAndUpdateXToHeader
+    @list.insert(1)
+    @list.find(2,true)
+    assert_equal(2,@list.peek)
+  end
+
+  def test_findX_xWillUpdateToHeaderIfExist
+    @list.insert(1)
+    @list.find(2,true)
+    assert_equal(2,@list.peek)
+  end
+
+  def test_setMaxLength
+    max_length = 10
+    list = LinkedList.new(max_length)
+    list = LinkedList.new
+  end
+
+  # def test_sizeEqualMaxLengthThenInsertX_useLURUpdate
+  #   max_length = 1
+  #   list = LinkedList.new(max_length)
+  #   list.insert(1)
+  #   list.insert(2)
+  #   assert_equal(2,list.peek)
+  #   assert_equal(max_length, list.size)
+  # end
 end

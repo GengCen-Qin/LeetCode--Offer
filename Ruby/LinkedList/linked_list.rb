@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LinkedList
-  attr_accessor :header, :tail, :size
+  attr_accessor :header, :tail, :size, :max_length
 
   class Node
     attr_accessor :ele, :next, :prev
@@ -11,7 +11,8 @@ class LinkedList
     end
   end
 
-  def initialize
+  def initialize(max_length = 20)
+    @max_length = max_length
     @size = 0
   end
 
@@ -25,6 +26,15 @@ class LinkedList
       node.prev = @tail
     end
     @tail = node
+  end
+
+  # 插入到头部
+  # @param ele 被插入的数据
+  def insertHeader(ele)
+    @size += 1
+    node = ele.is_a?(Node) ? ele : Node.new(ele)
+    node.next, header.prev = header, node if header
+    @header = node
   end
 
   def poll
@@ -48,14 +58,19 @@ class LinkedList
   end
 
   def peek
-    header.ele
+    header.ele if header
   end
 
-  def find(num)
+  # 查询
+  # @param num    [Integer]   要查询的内容
+  # @param cache  [Boolean]   是否在查询不到时，进行缓存，默认false
+  def find(num, cache = false)
     node = header
-    while nil != node
-      return node if node.ele == num
-      node = node.next
+    node = node.next while nil != node and node.ele != num
+    if cache and node.nil?
+      node = Node.new(num)
+      insertHeader(node)
     end
+    node
   end
 end
